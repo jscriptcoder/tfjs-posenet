@@ -1,3 +1,9 @@
-import * as posenet from '@tensorflow-models/posenet';
+import 'babel-polyfill'
+import * as React from 'react'
+import ReactDOM from 'react-dom'
+import PoseNetExample from './PoseNetExample'
 
-console.log('Hello')
+ReactDOM.render(
+  <PoseNetExample />,
+  document.getElementById('example')
+)
