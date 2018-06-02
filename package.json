@@ -4,7 +4,14 @@
   "description": "Realtime pose detection using pre-trained TensorFlow.js model PoseNet",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:css": "node-sass src/index.scss example/index.css",
+    "copy:html": "cp src/index.html example/",
+    "prebuild:example": "npm run build:css && npm run copy:html",
+    "build:example": "browserify src/index.jsx -o example/index.js -t [ babelify ]",
+    "example": "npm run build:example",
+    "postexample": "cd example && live-server",
+    "preexample:watch": "npm run example &",
+    "example:watch": "watch 'npm run build:example' src"
   },
   "repository": {
     "type": "git",
@@ -23,7 +30,18 @@
   "homepage": "https://github.com/jscriptcoder/tfjs-posenet#readme",
   "dependencies": {
     "@tensorflow-models/posenet": "^0.1.1",
+    "@tensorflow/tfjs": "^0.11.4",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "live-server": "^1.2.0",
+    "node-sass": "^4.9.0",
+    "watch": "^1.0.2"
   }
 }
