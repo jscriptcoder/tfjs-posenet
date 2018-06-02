@@ -1,0 +1,24 @@
+{
+  "name": "tfjs-posenet",
+  "version": "1.0.0",
+  "description": "Realtime pose detection using pre-trained TensorFlow.js model PoseNet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jscriptcoder/tfjs-posenet.git"
+  },
+  "keywords": [
+    "tensorflow.js",
+    "deeplearning",
+    "posenet"
+  ],
+  "author": "Francisco Ramos <jscriptcoder@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jscriptcoder/tfjs-posenet/issues"
+  },
+  "homepage": "https://github.com/jscriptcoder/tfjs-posenet#readme"
+}
