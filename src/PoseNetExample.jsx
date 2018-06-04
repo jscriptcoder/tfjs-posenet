@@ -1,12 +1,24 @@
 import * as posenet from '@tensorflow-models/posenet'
 import * as React from 'react'
-import { isMobile } from './utils'
+import { isMobile, drawKeypoints, drawSkeleton } from './utils'
 
 export default class PoseNetExample extends React.Component {
 
   static defaultProps = {
     videoWidth: 600,
     videoHeight: 500,
+    flipHorizontal: true,
+    architecture: 'single-pose',
+    showVideo: true,
+    showSkeleton: true,
+    showPoints: true,
+    minPoseConfidence: 0.1,
+    minPartConfidence: 0.5,
+    maxPoseDetections: 2,
+    nmsRadius: 20.0,
+    outputStride: 16,
+    imageScaleFactor: 0.5,
+    skeletonColor: 'aqua',
   }
 
   constructor(props) {
@@ -15,7 +27,7 @@ export default class PoseNetExample extends React.Component {
 
   async componentWillMount() {
     // Loads the pre-trained PoseNet model
-    this.model = await posenet.load();
+    this.net = await posenet.load();
   }
 
   async componentDidMount() {
@@ -24,9 +36,12 @@ export default class PoseNetExample extends React.Component {
     } catch(e) {
       // console.log(e)
     }
+
+    this.detectPose()
   }
 
   async setupCamera() {
+    const { videoWidth, videoHeight } = this.props
 
       // MDN: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -34,8 +49,9 @@ export default class PoseNetExample extends React.Component {
     }
 
     const video = this.video = document.querySelector('video')
-    video.width = this.props.videoWidth
-    video.height = this.props.videoHeight
+
+    video.width = videoWidth
+    video.height = videoHeight
 
     const mobile = isMobile()
 
@@ -44,8 +60,8 @@ export default class PoseNetExample extends React.Component {
       audio: false,
       video: {
         facingMode: 'user',
-        width: mobile ? undefined : this.props.videoWidth,
-        height: mobile ? undefined: this.props.videoHeight,
+        width: mobile ? void 0 : videoWidth,
+        height: mobile ? void 0: videoHeight,
       }
     });
 
@@ -53,96 +69,98 @@ export default class PoseNetExample extends React.Component {
 
     return new Promise(resolve => {
       video.onloadedmetadata = () => {
-        // Once the video is ready, we start showing video
+        // Once the video metadata is ready, we can start streaming video
         video.play()
-        resolve()
+        resolve(video)
       }
     })
   }
-  // 
-  // function detectPose(video, net) {
-  //   const canvas = this.canvas = document.querySelector('canvas')
-  //   const ctx = canvas.getContext('2d')
-  //   const flipHorizontal = true // since images are being fed from a webcam
-  //
-  //   canvas.width = this.props.videoWidth
-  //   canvas.height = this.props.videoHeight
-  //
-  //   async function poseDetectionFrame() {
-  //     if (guiState.changeToArchitecture) {
-  //       // Important to purge variables and free up GPU memory
-  //       guiState.net.dispose();
-  //
-  //       // Load the PoseNet model weights for either the 0.50, 0.75, 1.00, or 1.01 version
-  //       guiState.net = await posenet.load(Number(guiState.changeToArchitecture));
-  //
-  //       guiState.changeToArchitecture = null;
-  //     }
-  //
-  //     // Begin monitoring code for frames per second
-  //     stats.begin();
-  //
-  //     // Scale an image down to a certain factor. Too large of an image will slow down
-  //     // the GPU
-  //     const imageScaleFactor = guiState.input.imageScaleFactor;
-  //     const outputStride = Number(guiState.input.outputStride);
-  //
-  //     let poses = [];
-  //     let minPoseConfidence;
-  //     let minPartConfidence;
-  //     switch (guiState.algorithm) {
-  //       case 'single-pose':
-  //         const pose = await guiState.net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
-  //         poses.push(pose);
-  //
-  //         minPoseConfidence = Number(
-  //           guiState.singlePoseDetection.minPoseConfidence);
-  //         minPartConfidence = Number(
-  //           guiState.singlePoseDetection.minPartConfidence);
-  //         break;
-  //       case 'multi-pose':
-  //         poses = await guiState.net.estimateMultiplePoses(video, imageScaleFactor, flipHorizontal, outputStride,
-  //           guiState.multiPoseDetection.maxPoseDetections,
-  //           guiState.multiPoseDetection.minPartConfidence,
-  //           guiState.multiPoseDetection.nmsRadius);
-  //
-  //         minPoseConfidence = Number(guiState.multiPoseDetection.minPoseConfidence);
-  //         minPartConfidence = Number(guiState.multiPoseDetection.minPartConfidence);
-  //         break;
-  //     }
-  //
-  //     ctx.clearRect(0, 0, videoWidth, videoHeight);
-  //
-  //     if (guiState.output.showVideo) {
-  //       ctx.save();
-  //       ctx.scale(-1, 1);
-  //       ctx.translate(-videoWidth, 0);
-  //       ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
-  //       ctx.restore();
-  //     }
-  //
-  //     // For each pose (i.e. person) detected in an image, loop through the poses
-  //     // and draw the resulting skeleton and keypoints if over certain confidence
-  //     // scores
-  //     poses.forEach(({ score, keypoints }) => {
-  //       if (score >= minPoseConfidence) {
-  //         if (guiState.output.showPoints) {
-  //           drawKeypoints(keypoints, minPartConfidence, ctx);
-  //         }
-  //         if (guiState.output.showSkeleton) {
-  //           drawSkeleton(keypoints, minPartConfidence, ctx);
-  //         }
-  //       }
-  //     });
-  //
-  //     // End monitoring code for frames per second
-  //     stats.end();
-  //
-  //     requestAnimationFrame(poseDetectionFrame);
-  //   }
-  //
-  //   poseDetectionFrame();
-  // }
+
+  detectPose() {
+    const { videoWidth, videoHeight } = this.props
+    const canvas = this.canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+
+    canvas.width = videoWidth
+    canvas.height = videoHeight
+
+    poseDetectionFrame(ctx);
+  }
+
+  async poseDetectionFrame(ctx) {
+    const {
+      algorithm,
+      imageScaleFactor,
+      flipHorizontal,
+      outputStride,
+      minPoseConfidence,
+      maxPoseDetections,
+      minPartConfidence,
+      nmsRadius,
+      videoWidth,
+      videoHeight,
+      showVideo,
+      showPoints,
+      showSkeleton,
+      skeletonColor,
+    } = props
+
+    let poses = []
+
+    switch (this.props.algorithm) {
+      case 'single-pose':
+
+        const pose = await this.model.estimateSinglePose(
+          this.video,
+          imageScaleFactor,
+          flipHorizontal,
+          outputStride
+        )
+
+        poses.push(pose)
+
+        break
+      case 'multi-pose':
+
+        poses = await this.model.estimateMultiplePoses(
+          this.video,
+          imageScaleFactor,
+          flipHorizontal,
+          outputStride,
+          maxPoseDetections,
+          minPartConfidence,
+          nmsRadius
+        )
+
+        break
+    }
+
+    ctx.clearRect(0, 0, videoWidth, videoHeight);
+
+    if (showVideo) {
+      ctx.save()
+      ctx.scale(-1, 1)
+      ctx.translate(-videoWidth, 0)
+      ctx.drawImage(this.video, 0, 0, videoWidth, videoHeight)
+      ctx.restore()
+    }
+
+    // For each pose (i.e. person) detected in an image, loop through the poses
+    // and draw the resulting skeleton and keypoints if over certain confidence
+    // scores
+    poses.forEach(({ score, keypoints }) => {
+      if (score >= minPoseConfidence) {
+        if (showPoints) {
+          drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
+        }
+        if (showSkeleton) {
+          drawSkeleton(keypoints, minPartConfidence, skeletonColor, ctx);
+        }
+      }
+    })
+
+    requestAnimationFrame(poseDetectionFrame);
+  }
 
   render() {
     return (
