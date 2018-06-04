@@ -29,12 +29,12 @@ function toTuple({ y, x }) {
 }
 
 function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
-  ctx.beginPath();
-  ctx.moveTo(ax * scale, ay * scale);
-  ctx.lineTo(bx * scale, by * scale);
-  ctx.lineWidth = lineWidth;
-  ctx.strokeStyle = color;
-  ctx.stroke();
+  ctx.beginPath()
+  ctx.moveTo(ax * scale, ay * scale)
+  ctx.lineTo(bx * scale, by * scale)
+  ctx.lineWidth = lineWidth
+  ctx.strokeStyle = color
+  ctx.stroke()
 }
 
 export function drawSkeleton(keypoints, minConfidence, skeletonColor, ctx, scale = 1) {
@@ -46,5 +46,5 @@ export function drawSkeleton(keypoints, minConfidence, skeletonColor, ctx, scale
       toTuple(keypoints[1].position),
       skeletonColor, scale, ctx
     )
-  });
+  })
 }

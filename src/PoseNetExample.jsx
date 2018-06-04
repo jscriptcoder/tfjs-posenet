@@ -34,7 +34,7 @@ export default class PoseNetExample extends React.Component {
     try {
       await this.setupCamera()
     } catch(e) {
-      // console.log(e)
+      console.log(e)
     }
 
     this.detectPose()
@@ -76,7 +76,7 @@ export default class PoseNetExample extends React.Component {
     })
   }
 
-  detectPose() {
+  async detectPose() {
     const { videoWidth, videoHeight } = this.props
     const canvas = this.canvas = document.querySelector('canvas')
     const ctx = canvas.getContext('2d')
@@ -84,7 +84,7 @@ export default class PoseNetExample extends React.Component {
     canvas.width = videoWidth
     canvas.height = videoHeight
 
-    poseDetectionFrame(ctx);
+    await this.poseDetectionFrame(ctx);
   }
 
   async poseDetectionFrame(ctx) {
@@ -103,14 +103,14 @@ export default class PoseNetExample extends React.Component {
       showPoints,
       showSkeleton,
       skeletonColor,
-    } = props
+    } = this.props
 
     let poses = []
 
-    switch (this.props.algorithm) {
+    switch (algorithm) {
       case 'single-pose':
 
-        const pose = await this.model.estimateSinglePose(
+        const pose = await this.net.estimateSinglePose(
           this.video,
           imageScaleFactor,
           flipHorizontal,
@@ -122,7 +122,7 @@ export default class PoseNetExample extends React.Component {
         break
       case 'multi-pose':
 
-        poses = await this.model.estimateMultiplePoses(
+        poses = await this.net.estimateMultiplePoses(
           this.video,
           imageScaleFactor,
           flipHorizontal,
@@ -159,14 +159,14 @@ export default class PoseNetExample extends React.Component {
       }
     })
 
-    requestAnimationFrame(poseDetectionFrame);
+    requestAnimationFrame(async () => await this.poseDetectionFrame(ctx));
   }
 
   render() {
     return (
       <div className="posenet-example">
         <div className="loading"></div>
-        <video></video>
+        <video playsInline></video>
         <canvas></canvas>
       </div>
     )
