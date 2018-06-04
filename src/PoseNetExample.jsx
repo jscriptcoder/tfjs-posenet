@@ -8,7 +8,7 @@ export default class PoseNetExample extends React.Component {
     videoWidth: 600,
     videoHeight: 500,
     flipHorizontal: true,
-    architecture: 'single-pose',
+    algorithm: 'single-pose',
     showVideo: true,
     showSkeleton: true,
     showPoints: true,
@@ -19,6 +19,7 @@ export default class PoseNetExample extends React.Component {
     outputStride: 16,
     imageScaleFactor: 0.5,
     skeletonColor: 'aqua',
+    skeletonLineWidth: 2,
   }
 
   constructor(props) {
@@ -76,7 +77,7 @@ export default class PoseNetExample extends React.Component {
     })
   }
 
-  async detectPose() {
+  detectPose() {
     const { videoWidth, videoHeight } = this.props
     const canvas = this.canvas = document.querySelector('canvas')
     const ctx = canvas.getContext('2d')
@@ -84,10 +85,10 @@ export default class PoseNetExample extends React.Component {
     canvas.width = videoWidth
     canvas.height = videoHeight
 
-    await this.poseDetectionFrame(ctx);
+    this.poseDetectionFrame(ctx)
   }
 
-  async poseDetectionFrame(ctx) {
+  poseDetectionFrame(ctx) {
     const {
       algorithm,
       imageScaleFactor,
@@ -103,63 +104,71 @@ export default class PoseNetExample extends React.Component {
       showPoints,
       showSkeleton,
       skeletonColor,
+      skeletonLineWidth,
     } = this.props
 
-    let poses = []
+    const net = this.net
+    const video = this.video
 
-    switch (algorithm) {
-      case 'single-pose':
+    const poseDetectionFrameInner = async () => {
+      let poses = []
 
-        const pose = await this.net.estimateSinglePose(
-          this.video,
-          imageScaleFactor,
-          flipHorizontal,
-          outputStride
-        )
+      switch (algorithm) {
+        case 'single-pose':
 
-        poses.push(pose)
+          const pose = await net.estimateSinglePose(
+            video,
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride
+          )
 
-        break
-      case 'multi-pose':
+          poses.push(pose)
 
-        poses = await this.net.estimateMultiplePoses(
-          this.video,
-          imageScaleFactor,
-          flipHorizontal,
-          outputStride,
-          maxPoseDetections,
-          minPartConfidence,
-          nmsRadius
-        )
+          break
+        case 'multi-pose':
 
-        break
-    }
+          poses = await net.estimateMultiplePoses(
+            video,
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride,
+            maxPoseDetections,
+            minPartConfidence,
+            nmsRadius
+          )
 
-    ctx.clearRect(0, 0, videoWidth, videoHeight);
-
-    if (showVideo) {
-      ctx.save()
-      ctx.scale(-1, 1)
-      ctx.translate(-videoWidth, 0)
-      ctx.drawImage(this.video, 0, 0, videoWidth, videoHeight)
-      ctx.restore()
-    }
-
-    // For each pose (i.e. person) detected in an image, loop through the poses
-    // and draw the resulting skeleton and keypoints if over certain confidence
-    // scores
-    poses.forEach(({ score, keypoints }) => {
-      if (score >= minPoseConfidence) {
-        if (showPoints) {
-          drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
-        }
-        if (showSkeleton) {
-          drawSkeleton(keypoints, minPartConfidence, skeletonColor, ctx);
-        }
+          break
       }
-    })
 
-    requestAnimationFrame(async () => await this.poseDetectionFrame(ctx));
+      ctx.clearRect(0, 0, videoWidth, videoHeight);
+
+      if (showVideo) {
+        ctx.save()
+        ctx.scale(-1, 1)
+        ctx.translate(-videoWidth, 0)
+        ctx.drawImage(video, 0, 0, videoWidth, videoHeight)
+        ctx.restore()
+      }
+
+      // For each pose (i.e. person) detected in an image, loop through the poses
+      // and draw the resulting skeleton and keypoints if over certain confidence
+      // scores
+      poses.forEach(({ score, keypoints }) => {
+        if (score >= minPoseConfidence) {
+          if (showPoints) {
+            drawKeypoints(keypoints, minPartConfidence, skeletonColor, ctx);
+          }
+          if (showSkeleton) {
+            drawSkeleton(keypoints, minPartConfidence, skeletonColor, skeletonLineWidth, ctx);
+          }
+        }
+      })
+
+      requestAnimationFrame(poseDetectionFrameInner)
+    }
+
+    poseDetectionFrameInner()
   }
 
   render() {
