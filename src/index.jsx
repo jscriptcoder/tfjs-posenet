@@ -1,9 +1,9 @@
 import 'babel-polyfill'
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import PoseNetExample from './PoseNetExample'
+import PoseNet from './PoseNet'
 
 ReactDOM.render(
-  <PoseNetExample />,
+  <PoseNet />,
   document.getElementById('example')
 )

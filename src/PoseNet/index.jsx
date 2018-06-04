@@ -2,7 +2,7 @@ import * as posenet from '@tensorflow-models/posenet'
 import * as React from 'react'
 import { isMobile, drawKeypoints, drawSkeleton } from './utils'
 
-export default class PoseNetExample extends React.Component {
+export default class PoseNet extends React.Component {
 
   static defaultProps = {
     videoWidth: 600,
@@ -23,7 +23,15 @@ export default class PoseNetExample extends React.Component {
   }
 
   constructor(props) {
-    super(props, PoseNetExample.defaultProps)
+    super(props, PoseNet.defaultProps)
+  }
+
+  getCanvas = elem => {
+    this.canvas = elem
+  }
+
+  getVideo = elem => {
+    this.video = elem
   }
 
   async componentWillMount() {
@@ -35,26 +43,24 @@ export default class PoseNetExample extends React.Component {
     try {
       await this.setupCamera()
     } catch(e) {
-      console.log(e)
+      throw 'This browser does not support video capture, or this device does not have a camera'
     }
 
     this.detectPose()
   }
 
   async setupCamera() {
-    const { videoWidth, videoHeight } = this.props
-
       // MDN: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw 'Browser API navigator.mediaDevices.getUserMedia not available'
     }
 
-    const video = this.video = document.querySelector('video')
+    const { videoWidth, videoHeight } = this.props
+    const video = this.video
+    const mobile = isMobile()
 
     video.width = videoWidth
     video.height = videoHeight
-
-    const mobile = isMobile()
 
     // MDN: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -79,7 +85,7 @@ export default class PoseNetExample extends React.Component {
 
   detectPose() {
     const { videoWidth, videoHeight } = this.props
-    const canvas = this.canvas = document.querySelector('canvas')
+    const canvas = this.canvas
     const ctx = canvas.getContext('2d')
 
     canvas.width = videoWidth
@@ -173,10 +179,9 @@ export default class PoseNetExample extends React.Component {
 
   render() {
     return (
-      <div className="posenet-example">
-        <div className="loading"></div>
-        <video playsInline></video>
-        <canvas></canvas>
+      <div className="posenet">
+        <video playsInline ref={this.getVideo}></video>
+        <canvas ref={this.getCanvas}></canvas>
       </div>
     )
   }

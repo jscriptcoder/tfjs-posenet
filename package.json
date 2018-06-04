@@ -2,8 +2,9 @@
   "name": "tfjs-posenet",
   "version": "1.0.0",
   "description": "Realtime pose detection using pre-trained TensorFlow.js model PoseNet",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "build:prod": "browserify src/PoseNet/index.jsx -o lib/index.js -u react -t [ babelify ]",
     "build:css": "node-sass src/index.scss example/style.css",
     "copy:html": "cp src/index.html example/",
     "prebuild:example": "npm run build:css && npm run copy:html",
