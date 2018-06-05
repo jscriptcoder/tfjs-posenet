@@ -38,6 +38,15 @@ ReactDOM.render(
     */}
     algorithm={ 'single-pose' }
     
+    {/*
+      Loads the PoseNet model weights for either the 0.50, 0.75, 
+      1.00, or 1.01 version. They vary in size and accuracy. 1.01 
+      is the largest, but will be the slowest. 0.50 is the fastest, 
+      but least accurate.
+      Default value: 1.01
+    */}
+    mobileNetArchitecture={ 1.01 }
+    
     {/* Default value: true */}
     showVideo={ true }
     
