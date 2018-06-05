@@ -101,4 +101,4 @@ $> npm install
 $> npm run example
 ```
 
-Browser will open http://localhost:8080/. Have fun ;-)
+Browser will open http://localhost:8080/. Have fun :wink:
