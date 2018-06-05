@@ -67463,7 +67463,7 @@ var PoseNet = function (_React$Component) {
       var loading = this.state.loading ? React.createElement(
         'div',
         { className: 'PoseNet__loading' },
-        'Loading pose detector...'
+        this.props.loadingText
       ) : '';
       return React.createElement(
         'div',
@@ -67493,7 +67493,8 @@ PoseNet.defaultProps = {
   outputStride: 16,
   imageScaleFactor: 0.5,
   skeletonColor: 'aqua',
-  skeletonLineWidth: 2
+  skeletonLineWidth: 2,
+  loadingText: 'Loading pose detector...'
 };
 exports.default = PoseNet;
 

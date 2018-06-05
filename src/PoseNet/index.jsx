@@ -20,6 +20,7 @@ export default class PoseNet extends React.Component {
     imageScaleFactor: 0.5,
     skeletonColor: 'aqua',
     skeletonLineWidth: 2,
+    loadingText: 'Loading pose detector...'
   }
 
   constructor(props) {
@@ -182,7 +183,7 @@ export default class PoseNet extends React.Component {
 
   render() {
     const loading = this.state.loading
-      ? <div className="PoseNet__loading">Loading pose detector...</div>
+      ? <div className="PoseNet__loading">{ this.props.loadingText }</div>
       : ''
     return (
       <div className="PoseNet">
