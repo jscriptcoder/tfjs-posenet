@@ -90,6 +90,9 @@ ReactDOM.render(
     
     {/* Default value: 2 */}
     skeletonLineWidth={ 2 }
+    
+    {/* Default value: 'Loading pose detector...' */}
+    loadingText={ 'Loading pose detector...' }
   />,
   
   document.getElementById('app')
