@@ -4,7 +4,10 @@ This is an example of the power of using pre-trained models in the browser. Pose
 
 **See [demo here](https://jscriptcoder.github.io/tfjs-posenet/)**
 
-This code is based on [tfjs-models/posenet](https://github.com/tensorflow/tfjs-models/tree/master/posenet) TensorFlow team . I borrowed, adapted and turned it into a React component.
+**Notes:** 
+1. This code is based on [tfjs-models/posenet](https://github.com/tensorflow/tfjs-models/tree/master/posenet) TensorFlow team. I borrowed, adapted and turned it into a React component.
+2. Keep in mind I just tested it in Chrome. Honeslty, I don't care about other browsers for this kind of experiments. 
+3. You must allow, for obvious reasons, the use of your webcam. Don't worry, the images stay in your browser. Let's say it's GDPR compliance :stuck_out_tongue_winking_eye:
 
 ## PoseNet React Component
 ```jsx
