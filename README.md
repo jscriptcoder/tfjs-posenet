@@ -110,16 +110,19 @@ $ npm install jscriptcoder/tfjs-posenet
 
 ```jsx
 import * as React from 'react'
-import PoseNet from 'path/to/PoseNet'
+import PoseNet from 'tfjs-posenet'
 
 const MyContainer = (props) => (
   <div>
-    <h3>This is a my container<h3>
+    <h3>This is my container<h3>
     <PoseNet 
       videoWidth={props.width} 
       videoHeight={props.height} 
-      skeletonColor={props.color}
-    />
+      skeletonColor={props.color}>
+      
+      Loading PoseNet...
+      
+    </PoseNet>
   </div>
 )
 ```
