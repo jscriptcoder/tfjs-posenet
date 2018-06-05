@@ -118,7 +118,11 @@ const MyContainer = (props) => (
     <PoseNet 
       videoWidth={props.width} 
       videoHeight={props.height} 
-      skeletonColor={props.color} />
+      skeletonColor={props.color}>
+      
+      Loading PoseNet...
+      
+    </PoseNet>
   </div>
 )
 ```
