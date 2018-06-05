@@ -67246,8 +67246,7 @@ var PoseNet = function (_React$Component) {
               case 5:
                 _context2.prev = 5;
                 _context2.t0 = _context2['catch'](0);
-
-                console.log(_context2.t0);
+                throw 'This browser does not support video capture, or this device does not have a camera';
 
               case 8:
 
