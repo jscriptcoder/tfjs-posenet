@@ -97,15 +97,15 @@ ReactDOM.render(
 ```
 ## Installing and running example
 ```
-$> npm install
-$> npm run example
+$ npm install
+$ npm run example
 ```
 
 Browser will open http://localhost:8080/. Have fun :wink:
 
 ## How to consume the component
 ```
-$> npm install jscriptcoder/tfjs-posenet
+$ npm install jscriptcoder/tfjs-posenet
 ```
 
 ```jsx
