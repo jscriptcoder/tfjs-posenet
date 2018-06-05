@@ -1,12 +1,39 @@
-html, body { height: 100%; }
+* { box-sizing: border-box; }
 
-// PoseNet styling
-.PoseNet {
+%whole-container {
+  width: 100%;
+  height: 100%;
+}
+
+%center-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+}
+
+html, body {
+  @extend %whole-container;
+  @extend %center-content;
+  margin: 0;
+}
+
+#example {
+  flex-grow: 1;
   height: 100%;
+}
+
+@media (min-width: 600px) {
+  #example {
+    flex-grow: unset;
+    width: 600px;
+    height: 500px;
+  }
+}
+
+// PoseNet styling
+.PoseNet {
+  @extend %whole-container;
+  @extend %center-content;
 
   &__loading {
     position: absolute;
@@ -61,11 +88,6 @@ html, body { height: 100%; }
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-	width: 100wh;
-	height: 90vh;
 	color: #fff;
 	background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
 	background-size: 400% 400%;
@@ -76,8 +98,7 @@ body {
 
 // Television
 .tv {
-	width: 600px;
-	height: 500px;
+	@extend %whole-container;
 	border: 10px solid #333;
 	border-radius: 15px;
 	background-clip: border-box;
@@ -105,9 +126,8 @@ body {
 	}
 
   &-inner {
+    @extend %whole-container;
   	overflow: hidden;
   	position: relative;
-  	width: 100%;
-  	height: 100%;
   }
 }

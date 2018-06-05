@@ -67209,7 +67209,7 @@ var PoseNet = function (_React$Component) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return posenet.load();
+                return posenet.load(this.props.mobileNetArchitecture);
 
               case 2:
                 this.net = _context.sent;
@@ -67483,6 +67483,7 @@ PoseNet.defaultProps = {
   videoHeight: 500,
   flipHorizontal: true,
   algorithm: 'single-pose',
+  mobileNetArchitecture: (0, _utils.isMobile)() ? 0.50 : 1.01,
   showVideo: true,
   showSkeleton: true,
   showPoints: true,

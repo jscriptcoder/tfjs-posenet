@@ -1,22 +1,39 @@
-html, body {
-  height: 100%; }
+* {
+  box-sizing: border-box; }
 
-.PoseNet {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+html, body, .PoseNet, .tv, .tv-inner {
   width: 100%;
   height: 100%; }
-  .PoseNet__loading {
-    position: absolute;
-    font-family: 'Open Sans';
-    font-size: 2em; }
-  .PoseNet video {
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    display: none; }
+
+html, body, .PoseNet {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+html, body {
+  margin: 0; }
+
+#example {
+  flex-grow: 1;
+  height: 100%; }
+
+@media (min-width: 600px) {
+  #example {
+    flex-grow: unset;
+    width: 600px;
+    height: 500px; } }
+
+.PoseNet__loading {
+  position: absolute;
+  font-family: 'Open Sans';
+  font-size: 2em; }
+
+.PoseNet video {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  display: none; }
 
 @-webkit-keyframes Gradient {
   0% {
@@ -43,11 +60,6 @@ html, body {
     background-position: 0% 50%; } }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100wh;
-  height: 90vh;
   color: #fff;
   background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
   background-size: 400% 400%;
@@ -56,8 +68,6 @@ body {
   animation: Gradient 15s ease infinite; }
 
 .tv {
-  width: 600px;
-  height: 500px;
   border: 10px solid #333;
   border-radius: 15px;
   background-clip: border-box;
@@ -83,6 +93,4 @@ body {
     border-top-left-radius: 10px; }
   .tv-inner {
     overflow: hidden;
-    position: relative;
-    width: 100%;
-    height: 100%; }
+    position: relative; }

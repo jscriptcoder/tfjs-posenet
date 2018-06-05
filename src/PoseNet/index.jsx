@@ -9,6 +9,7 @@ export default class PoseNet extends React.Component {
     videoHeight: 500,
     flipHorizontal: true,
     algorithm: 'single-pose',
+    mobileNetArchitecture: isMobile() ? 0.50 : 1.01,
     showVideo: true,
     showSkeleton: true,
     showPoints: true,
@@ -38,7 +39,7 @@ export default class PoseNet extends React.Component {
 
   async componentWillMount() {
     // Loads the pre-trained PoseNet model
-    this.net = await posenet.load();
+    this.net = await posenet.load(this.props.mobileNetArchitecture);
   }
 
   async componentDidMount() {
