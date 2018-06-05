@@ -95,3 +95,10 @@ ReactDOM.render(
   document.getElementById('app')
 )
 ```
+## Installing and running example
+```sh
+$> npm install
+$> npm run example
+```
+
+Browser will open http://localhost:8080/. Have fun ;-)
