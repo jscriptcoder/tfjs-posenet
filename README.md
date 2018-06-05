@@ -108,7 +108,7 @@ Browser will open http://localhost:8080/. Have fun :wink:
 $ npm install jscriptcoder/tfjs-posenet
 ```
 
-```jsx
+```js
 import * as React from 'react'
 import PoseNet from 'tfjs-posenet'
 
@@ -118,11 +118,7 @@ const MyContainer = (props) => (
     <PoseNet 
       videoWidth={props.width} 
       videoHeight={props.height} 
-      skeletonColor={props.color}>
-      
-      Loading PoseNet...
-      
-    </PoseNet>
+      skeletonColor={props.color} />
   </div>
 )
 ```
