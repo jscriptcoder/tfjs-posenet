@@ -67196,6 +67196,7 @@ var PoseNet = function (_React$Component) {
       _this.video = elem;
     };
 
+    _this.state = { loading: true };
     return _this;
   }
 
@@ -67249,15 +67250,21 @@ var PoseNet = function (_React$Component) {
                 throw 'This browser does not support video capture, or this device does not have a camera';
 
               case 8:
+                _context2.prev = 8;
+
+                this.setState({ loading: false });
+                return _context2.finish(8);
+
+              case 11:
 
                 this.detectPose();
 
-              case 9:
+              case 12:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 5]]);
+        }, _callee2, this, [[0, 5, 8, 11]]);
       }));
 
       function componentDidMount() {
@@ -67453,9 +67460,15 @@ var PoseNet = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var loading = this.state.loading ? React.createElement(
+        'div',
+        { className: 'PoseNet__loading' },
+        'Loading pose detector...'
+      ) : '';
       return React.createElement(
         'div',
-        { className: 'posenet' },
+        { className: 'PoseNet' },
+        loading,
         React.createElement('video', { playsInline: true, ref: this.getVideo }),
         React.createElement('canvas', { ref: this.getCanvas })
       );
@@ -67589,6 +67602,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-_reactDom2.default.render(React.createElement(_PoseNet2.default, null), document.getElementById('example'));
+var TV = function TV(props) {
+  return React.createElement(
+    'div',
+    { className: 'tv' },
+    React.createElement(
+      'div',
+      { className: 'tv-inner' },
+      props.children
+    )
+  );
+};
+
+_reactDom2.default.render(React.createElement(
+  TV,
+  null,
+  React.createElement(_PoseNet2.default, null)
+), document.getElementById('example'));
 
 },{"./PoseNet":586,"babel-polyfill":210,"react":575,"react-dom":572}]},{},[588]);

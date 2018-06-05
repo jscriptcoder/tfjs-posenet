@@ -24,6 +24,7 @@ export default class PoseNet extends React.Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps)
+    this.state = { loading: true }
   }
 
   getCanvas = elem => {
@@ -44,6 +45,8 @@ export default class PoseNet extends React.Component {
       await this.setupCamera()
     } catch(e) {
       throw 'This browser does not support video capture, or this device does not have a camera'
+    } finally {
+      this.setState({ loading: false })
     }
 
     this.detectPose()
@@ -178,10 +181,14 @@ export default class PoseNet extends React.Component {
   }
 
   render() {
+    const loading = this.state.loading
+      ? <div className="PoseNet__loading">Loading pose detector...</div>
+      : ''
     return (
-      <div className="posenet">
-        <video playsInline ref={this.getVideo}></video>
-        <canvas ref={this.getCanvas}></canvas>
+      <div className="PoseNet">
+        { loading }
+        <video playsInline ref={ this.getVideo }></video>
+        <canvas ref={ this.getCanvas }></canvas>
       </div>
     )
   }
