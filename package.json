@@ -20,6 +20,7 @@
   },
   "keywords": [
     "tensorflow.js",
+    "tfjs-models"
     "deeplearning",
     "posenet"
   ],
