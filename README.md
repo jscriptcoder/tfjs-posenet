@@ -95,3 +95,31 @@ ReactDOM.render(
   document.getElementById('app')
 )
 ```
+## Installing and running example
+```
+$ npm install
+$ npm run example
+```
+
+Browser will open http://localhost:8080/. Have fun :wink:
+
+## How to consume the component
+```
+$ npm install jscriptcoder/tfjs-posenet
+```
+
+```jsx
+import * as React from 'react'
+import PoseNet from 'path/to/PoseNet'
+
+const MyContainer = (props) => (
+  <div>
+    <h3>This is a my container<h3>
+    <PoseNet 
+      videoWidth={props.width} 
+      videoHeight={props.height} 
+      skeletonColor={props.color}
+    />
+  </div>
+)
+```
