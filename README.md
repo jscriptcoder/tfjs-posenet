@@ -19,9 +19,9 @@ ReactDOM.render(
     videoHeight={ 500 }
     
     {/*
-      If the poses should be flipped/mirrored 
-      horizontally. This should be set to true for videos where the 
-      video is by default flipped horizontally (i.e. a webcam), and 
+      If the poses should be flipped/mirrored horizontally. 
+      This should be set to true for videos where the video 
+      is by default flipped horizontally (i.e. a webcam), and 
       you want the poses to be returned in the proper orientation.
       Default value: false
     */}
@@ -42,16 +42,31 @@ ReactDOM.render(
     {/* Default value: true */}
     showPoints={ true }
     
-    {/* Default value: 0.1 */}
+    {/*
+      The overall confidence in the estimation of a person's
+      pose (i.e. a person detected in a frame)
+      Default value: 0.1
+    */}
     minPoseConfidence={ 0.1 }
     
-    {/* Default value: 0.5 */}
+    {/*
+      The confidence that a particular estimated keypoint
+      position is accurate (i.e. the elbow's position)
+      Default value: 0.5
+    */}
     minPartConfidence={ 0.5 }
     
-    {/* Default value: 2 */}
+    {/* 
+      The maximum number of poses to detect.
+      Default value: 2
+    */}
     maxPoseDetections={ 2 }
     
-    {/* Default value: 20.0 */}
+    {/*
+      Non-maximum suppression part distance. It needs to be strictly positive. 
+      Two parts suppress each other if they are less than nmsRadius pixels away. 
+      Defaults value: 20
+    */}
     nmsRadius={ 20.0 }
     
     {/*
