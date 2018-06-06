@@ -4,6 +4,8 @@ This is an example of using pre-trained models in the browser. For this particul
 
 **See [demo here](https://jscriptcoder.github.io/tfjs-posenet/)**
 
+![PoseNet example](posenet_fran.gif)
+
 **Notes:** 
 1. This code is based on [tfjs-models/posenet](https://github.com/tensorflow/tfjs-models/tree/master/posenet) model released by TensorFlow team. I borrowed, adapted and turned it into a React component.
 2. Keep in mind I just tested it in Chrome. Honeslty, I don't care about other browsers for this kind of experiments. 
